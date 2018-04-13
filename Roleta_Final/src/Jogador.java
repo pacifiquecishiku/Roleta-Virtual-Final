@@ -42,6 +42,8 @@ public class Jogador {
 	public int getSemapostas(){
 		return semApostas;
 	}
+	
+	
 //__________________________________________________________//
 	public boolean apostar(int fichas){
 		boolean apostou = false;

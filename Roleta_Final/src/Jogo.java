@@ -4,6 +4,7 @@ public class Jogo {
 	public static void main(String[]args){
 	Scanner input =new Scanner(System.in);
 	Jogador[] jogadores = new Jogador[2];
+	boolean Fichasdisponiveis = true;
 	
 	//-------PRENCHER O ARRAY--------
 			for(int i=0; i < jogadores.length;i++){
@@ -17,25 +18,28 @@ public class Jogo {
 					}//if
 				}//if
 			}//for
-
-			while(verificaFichasDisponiveis()){
-			//----------QUER APOSTAR OU NÃO------------
-			for(int i=0; i < jogadores.length;i++){
-				if(jogadores[i]!=null){
-					System.out.println(jogadores[i].getNome()+ " Deseja apostar? sim ou não");
-					if(input.next().equals("sim")){ // quer apostar
-						apostar(jogadores[i]);					
-					}else 
-						if(jogadores[i].getSemapostas()==3){
-							System.out.println("Você já tem 3 rodadas sem apostas");
-							apostar(jogadores[i]);
-						}else
-							jogadores[i].SemApostar();
-				}//if
-			}//for
-			}//while
-			input.close();
-	}//Main
+			ApostarOuNao(jogadores);//apostando
+			rodar(jogadores);
+}//Main
+	
+//----------QUER APOSTAR OU NÃO------------
+	public static void ApostarOuNao(Jogador []jogadores){
+		Scanner input =new Scanner(System.in);
+		
+		for(int i=0; i < jogadores.length;i++){
+			if(jogadores[i]!=null){
+				System.out.println(jogadores[i].getNome()+ " Deseja apostar? sim ou não");
+				if(input.next().equals("sim")){ // quer apostar
+					apostar(jogadores[i]);					
+				}else 
+					if(jogadores[i].getSemapostas()==3){
+						System.out.println("Você já tem 3 rodadas sem apostas");
+						apostar(jogadores[i]);
+					}else
+						jogadores[i].SemApostar();
+			}//if
+		}//for
+	}//ApostarOuNao
 	
 	
 	//----------APOSTAR--------------
@@ -61,7 +65,14 @@ public class Jogo {
 		input.close();
 	}//Apostar
 	
-	private static boolean verificaFichasDisponiveis(){
-		return true;
-	}
+	
+//----------------------------RODAR------------------------//
+	public static void rodar(Jogador[] jogadores){
+		Roleta rol = new Roleta();
+		Banca banc = new Banca();
+		rol.rodar();
+		int numero = rol.getNumero();
+		String cor = rol.getCor();
+	}//Rodar
+	
 }//Class_Jogo
