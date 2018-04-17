@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 
 /*
@@ -36,6 +35,7 @@ public class RoletaVirtual {
 				}//if
 			}//for
         //------------Apostar e Rodar o jogo-------------------
+			
 			ApostarOuNao(jogadores);//apostando
 			rodar(jogadores);//rodando o jogo
 }//Main
@@ -98,7 +98,7 @@ public class RoletaVirtual {
 		int numero = rol.getNumero();
 		String cor = rol.getCor();
                 boolean parOUimpar= rol.getParOuImpar();
-                System.out.println("   RESULTADOS \n ---------------- \n *Número: " + numero + "\n *cor: " + cor);//Divulgando resultados
+                System.out.println("   RESULTADOS \n ---------------- \n  *NÚMERO: " + numero + "\n  *COR: " + cor);//Divulgando resultados
                 //Percorrendo o array de jogadores
                 for(Jogador JG: jogadores){
                    if (JG != null)
@@ -197,6 +197,4 @@ public class RoletaVirtual {
                     }//if
                 }//for
 	}//Rodar
-   
-      
-    }//Class Roleta
+}//Class Roleta
