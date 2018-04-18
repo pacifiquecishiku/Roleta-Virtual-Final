@@ -38,6 +38,10 @@ class Jogador {
 	public int getFichas(){
 		return fichas;
 	}
+        public void setFichas(int fichas){
+            this.fichas = fichas;
+	}
+        
 	public String getAposta() {
 		return aposta;
 	}

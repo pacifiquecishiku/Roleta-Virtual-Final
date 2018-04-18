@@ -18,7 +18,7 @@ public class RoletaVirtual {
     Banca banc = new Banca();
     public static void main(String[] args) {
         // TODO code application logic here
-        
+        Banca banc = new Banca();
 	Scanner input =new Scanner(System.in);
 	Jogador[] jogadores = new Jogador[2];
 	
@@ -26,7 +26,7 @@ public class RoletaVirtual {
 			for(int i=0; i < jogadores.length;i++){
 				if(jogadores[i]==null){
 					System.out.println("Deseja inserir jogador na posição " + (i+1) + "? sim ou não");
-					if(input.next().equals("sim")){
+					if(input.next().equalsIgnoreCase("sim")){
 						System.out.println("Insere um nome");
 						String nome = input.next();
 						Jogador J = new Jogador(nome);
@@ -35,9 +35,28 @@ public class RoletaVirtual {
 				}//if
 			}//for
         //------------Apostar e Rodar o jogo-------------------
-			
-			ApostarOuNao(jogadores);//apostando
-			rodar(jogadores);//rodando o jogo
+        int j =1;
+			/*for(int i=0; i< jogadores.length; i++){
+                            if (jogadores[i] != null)
+                                //if(jogadores[i].getFichas() != 0) {
+                                j += jogadores[i].getFichas();
+                        }*/
+                               
+                                    while(j !=0) {
+                                        j=0;
+                                        if(banc.getBudget() != 0) {
+                                            ApostarOuNao(jogadores);//apostando
+                                            rodar(jogadores, banc);//rodando o jogo
+                                            for(int i=0; i< jogadores.length; i++)
+                                                if (jogadores[i] != null)
+                                                    System.out.println(jogadores[i].getNome() + " possui " + jogadores[i].getFichas() + " fichas");
+                                        }else System.out.println("Banco nao tem dinheiro");
+                                        //----------------------
+                                        for(int i=0; i< jogadores.length; i++){
+                                            if (jogadores[i] != null)
+                                                j += jogadores[i].getFichas();
+                                        }
+                                    } System.out.println("Nenhum jogador possui fichas");
 }//Main
 	
 //----------QUER APOSTAR OU NÃO------------
@@ -47,7 +66,7 @@ public class RoletaVirtual {
         for (Jogador jogadore : jogadores) {
             if (jogadore != null) {
                 System.out.println(jogadore.getNome() + " Deseja apostar? sim ou não");
-                if (input.next().equals("sim")) {
+                if (input.next().equalsIgnoreCase("sim")) {
                     // quer apostar
                     apostar(jogadore);
                 } else if (jogadore.getSemapostas() == 3) {
@@ -73,12 +92,20 @@ public class RoletaVirtual {
 			System.out.println("par ou impar\npreto ou vermelho\nnumero\nmaior ou menor");
 			String aposta = input.next();
 			J.setAposta(aposta);
-			
-			System.out.println("Insere o valor (número de fichas)");
-			J.setFichasApostadas(input.nextInt());
+                        boolean apostou=false;
+			while (apostou==false){
+                            System.out.println("Insere o valor (número de fichas)");
+                            J.setFichasApostadas(input.nextInt());
+                            if(J.getFichasApostadas() <= J.getFichas())
+                                apostou=true;
+                            else
+                                System.out.println("Voce nao poussi tantas fichas, apenas tem " + J.getFichas() + " fichas");
+                        }
+                            
+                        J.setFichas(J.getFichas() - J.getFichasApostadas());
 			//banc.ganharDoJogador(J.getFichasApostadas());
 			if(J.getAposta().equals("numero")){
-				System.out.println("Qual número deseja apostar?");
+				System.out.println("Qual número deseja apostar?(0 a 36) ");
 				J.setNumeroAposta(input.nextInt());
 			}
 		}//if
@@ -89,9 +116,8 @@ public class RoletaVirtual {
 	
 	
 //----------------------------RODAR------------------------//
-	private static void rodar(Jogador[] jogadores){
+	private static void rodar(Jogador[] jogadores,Banca banc){
 		Roleta rol = new Roleta();
-                Banca banc = new Banca();
                 
 		rol.rodar();//girar a roleta
                //Recuperando os dados da roleta
@@ -110,8 +136,10 @@ public class RoletaVirtual {
                                     System.out.println("o jogador " + JG.getNome()+ " ganhoooou!!! ;)");
                                     if(banc.getBudget()>= JG.getFichasApostadas()*2)//a banca tem fichas suficientes pra pagar
                                         JG.ganharFichas(JG.getFichasApostadas()*2);//o jogador recebe a recompensa
-                                    else //a banca não tem capacidade de pagar
+                                    else{ //a banca não tem capacidade de pagar
                                         System.out.println("Você quebrou a banca");
+                                        JG.ganharFichas(JG.getFichasApostadas());
+                                    }
                                 //??????Sérá que a banca devolve o dinheiro que o jogador apostou????????????
                                 }else{//o jogador não ganhou (perdeu)
                                     banc.ganharDoJogador(JG.getFichasApostadas());//a banca recebe as fichas apostadas pelo jogador

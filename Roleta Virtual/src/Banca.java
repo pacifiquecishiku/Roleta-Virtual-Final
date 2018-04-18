@@ -1,6 +1,6 @@
 public class Banca {
 	
-	int budget = 10000;
+	int budget = 1000;
 	
 	public Banca(){
 		
